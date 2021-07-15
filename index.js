@@ -15,8 +15,36 @@ mongoose
   .then(() => console.log("connected to mongoose..."))
   .catch((err) => console.error(err))
 
-//creating a get route
+//schema to control type of data
+const eventSchema = mongoose.Schema({
+  title: String,
+  date: Date,
+  description: String,
+  cost: String,
+  attendees: Array,
+})
+
+const Event = mongoose.model("Event", eventSchema) //create model from Schema
+
+const newEvent = {
+  title: "Do your part - Keep Boca Clean",
+  date: "2021-08-02",
+  description: "Cleaning up the trash and debris locally",
+  cost: "Free",
+  attendees: ["Chris", "Mia", "Noah", "Emily"],
+}
+
+//holds object and creates a class
+function createEvent() {
+  new Event(newEvent)
+    .save()
+    .then(() => console.log("event was saved!"))
+    .catch((err) => console.error(err))
+}
+
+//creating a get route (reference newly created func)
 app.get("/", (req, res) => {
+  createEvent()
   res.send("Houston, we're good!")
 })
 
